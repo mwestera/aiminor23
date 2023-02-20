@@ -69,23 +69,21 @@ def sample_next_word(probability_distribution):
 
 def extract_continuation_probabilities(words):
 
-    trigrams = []
-    for i in range(len(words) - 2):
-        trigram = (words[i], words[i+1], words[i+2])
-        trigrams.append(trigram)
 
-    unique_bigrams = {trigram[:2] for trigram in trigrams}
+    bigram_to_trigrams = {}
+    for i in range(len(words) - 2):
+        trigram = (words[i], words[i + 1], words[i + 2])
+        bigram = trigram[:2]
+        if bigram not in bigram_to_trigrams:
+            bigram_to_trigrams[bigram] = []
+        bigram_to_trigrams[bigram].append(trigram)
 
     big_counts_dictionary = {}
-    for bigram in unique_bigrams:
-        trigrams_that_start_with_bigram = [trigram for trigram in trigrams if trigram[:2] == bigram]
-        continuations = [trigram[-1] for trigram in trigrams_that_start_with_bigram]
-        counts = {}
+    for bigram, trigrams in bigram_to_trigrams.items():
+        continuations = [trigram[-1] for trigram in trigrams]
+        counts = {word: 0 for word in continuations}
         for word in continuations:
-            if word in counts:
-                counts[word] += 1
-            else:
-                counts[word] = 1
+            counts[word] += 1
         big_counts_dictionary[bigram] = counts
 
     return big_counts_dictionary
