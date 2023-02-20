@@ -16,6 +16,7 @@ def main():
     output_ids = model.generate(
         input_ids,
         max_length=60,
+
         # num_beams=5,
         # early_stopping=True,
         # no_repeat_ngram_size=2,
@@ -26,10 +27,10 @@ def main():
 
         # output_scores=True, return_dict_in_generate=True,
 
-        # do_sample=True,
-        # temperature=0.7,
+        do_sample=True,
+        # temperature=2.0,
         # top_k=50,
-        # top_p=0.92,
+        top_p=0.92,
     )
 
     for n, output in enumerate(output_ids):
